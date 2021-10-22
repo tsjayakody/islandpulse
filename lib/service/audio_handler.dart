@@ -10,12 +10,11 @@ Future<AudioHandler> initAudioService() async {
   return await AudioService.init(
     builder: () => MyAudioHandler(),
     config: const AudioServiceConfig(
-      androidNotificationChannelId: 'lk.derana.macro.audio',
-      androidNotificationChannelName: 'Island Pulse',
-      androidNotificationOngoing: true,
-      androidStopForegroundOnPause: true,
-      androidNotificationIcon: 'drawable/ic_stat_name'
-    ),
+        androidNotificationChannelId: 'lk.derana.macro.audio',
+        androidNotificationChannelName: 'Island Pulse',
+        androidNotificationOngoing: true,
+        androidStopForegroundOnPause: true,
+        androidNotificationIcon: 'drawable/ic_stat_name'),
   );
 }
 
@@ -36,7 +35,7 @@ class MyAudioHandler extends BaseAudioHandler {
     try {
       await _player.setAudioSource(_playlist);
     } catch (e) {
-      print("Error: $e");
+      _player.dispose();
     }
   }
 
@@ -78,29 +77,14 @@ class MyAudioHandler extends BaseAudioHandler {
     });
   }
 
-  void _listenForDurationChanges() {
-    _player.durationStream.listen((duration) {
-      var index = _player.currentIndex;
-      final newQueue = queue.value;
-      if (index == null || newQueue.isEmpty) return;
-      if (_player.shuffleModeEnabled) {
-        index = _player.shuffleIndices![index];
-      }
-      final oldMediaItem = newQueue[index];
-      final newMediaItem = oldMediaItem.copyWith(duration: duration);
-      newQueue[index] = newMediaItem;
-      queue.add(newQueue);
-      mediaItem.add(newMediaItem);
-    });
-  }
-
   void _updateMediaMetadata() {
     _timer = Timer.periodic(const Duration(seconds: 4), (timer) async {
       var index = _player.currentIndex;
       final newQueue = queue.value;
       if (index == null || newQueue.isEmpty) return;
       final oldMediaItem = newQueue[index];
-      final currentTrack = await fetchCurrentTrack(oldMediaItem.extras!['data']);
+      final currentTrack =
+          await fetchCurrentTrack(oldMediaItem.extras!['data']);
       final newMediaItem = oldMediaItem.copyWith(
         title: currentTrack.title,
         artist: currentTrack.artist,
@@ -205,10 +189,27 @@ class MyAudioHandler extends BaseAudioHandler {
   }
 
   @override
-  Future<void> skipToNext() => _player.seekToNext();
+  Future<void> skipToNext() async {
+    if (_player.currentIndex != null) {
+      if (_player.currentIndex! < queue.value.indexOf(queue.value.last)) {
+        _player.seekToNext();
+      } else {
+        _player.seek(Duration.zero, index: 0);
+      }
+    }
+  }
 
   @override
-  Future<void> skipToPrevious() => _player.seekToPrevious();
+  Future<void> skipToPrevious() async {
+    if (_player.currentIndex != null) {
+      if (_player.currentIndex! > queue.value.indexOf(queue.value.first)) {
+        _player.seekToPrevious();
+      } else {
+        _player.seek(Duration.zero,
+            index: queue.value.indexOf(queue.value.last));
+      }
+    }
+  }
 
   @override
   Future<void> setRepeatMode(AudioServiceRepeatMode repeatMode) async {

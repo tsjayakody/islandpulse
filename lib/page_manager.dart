@@ -85,24 +85,31 @@ class PageManager {
       isLastSongNotifier.value = playlist.last == mediaItem;
     }
   }
-  
+
   void launchWhatsapp() {
-    _launchSocial("https://wa.me/+94707078573/?text=''", "https://api.whatsapp.com/send?phone=+94707078573=''");
+    _launchSocial("https://wa.me/+94707078573/?text=''",
+        "https://api.whatsapp.com/send?phone=+94707078573=''");
   }
+
   void launchFacebook() {
-    _launchSocial("fb://profile/1087496968305791", "https://www.facebook.com/islandpulse.lk");
+    _launchSocial("fb://profile/islandpulse.lk",
+        "https://www.facebook.com/islandpulse.lk");
   }
+
   void launchInstagram() {
-    _launchSocial('https://www.instagram.com/pulse.lk/', 'https://www.instagram.com/pulse.lk/');
+    _launchSocial('https://www.instagram.com/pulse.lk/',
+        'https://www.instagram.com/pulse.lk/');
   }
+
   void launchYoutube() {
-    _launchSocial('https://www.youtube.com/channel/UCkFyITwomCDX0ntPGz66xkQ', 'https://www.youtube.com/channel/UCkFyITwomCDX0ntPGz66xkQ');
+    _launchSocial('https://www.youtube.com/channel/UCkFyITwomCDX0ntPGz66xkQ',
+        'https://www.youtube.com/channel/UCkFyITwomCDX0ntPGz66xkQ');
   }
 
   void _launchSocial(String url, String fallbackUrl) async {
     try {
       bool launched =
-      await launch(url, forceSafariVC: false, forceWebView: false);
+          await launch(url, forceSafariVC: false, forceWebView: false);
       if (!launched) {
         await launch(fallbackUrl, forceSafariVC: false, forceWebView: false);
       }
@@ -112,16 +119,14 @@ class PageManager {
   }
 
   void dragControl(DragEndDetails details) {
-    if(details.primaryVelocity == 0) return;
+    if (details.primaryVelocity == 0) return;
     if (details.primaryVelocity!.compareTo(0) == 1) {
       if (!isFirstSongNotifier.value) {
         previous();
       } else {
         return;
       }
-    }
-    else
-    if (!isLastSongNotifier.value) {
+    } else if (!isLastSongNotifier.value) {
       next();
     } else {
       return;
@@ -131,6 +136,7 @@ class PageManager {
   void play() {
     _audioHandler.play();
   }
+
   void pause() => _audioHandler.pause();
 
   void seek(Duration position) => _audioHandler.seek(position);

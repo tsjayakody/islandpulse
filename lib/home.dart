@@ -71,32 +71,31 @@ class _HomeState extends State<Home> {
                     left: -6.5,
                     bottom: MediaQuery.of(context).size.height * 0.05,
                     child: ValueListenableBuilder<ButtonState>(
-                      valueListenable: pageManager.playButtonNotifier,
-                      builder: (_, value, __) {
-                        switch (value) {
-                          case ButtonState.playing:
-                            return SpinKitPulse(
-                              color: Theme.of(context).backgroundColor,
-                              size: 20.0,
-                            );
-                          case ButtonState.paused:
-                            return const SizedBox(
-                              width: 20.0,
-                              height: 20.0,
-                            );
-                          case ButtonState.loading:
-                            return const SizedBox(
-                              width: 20.0,
-                              height: 20.0,
-                            );
-                        }
-                      }
-                    ),
+                        valueListenable: pageManager.playButtonNotifier,
+                        builder: (_, value, __) {
+                          switch (value) {
+                            case ButtonState.playing:
+                              return SpinKitPulse(
+                                color: Theme.of(context).backgroundColor,
+                                size: 20.0,
+                              );
+                            case ButtonState.paused:
+                              return const SizedBox(
+                                width: 20.0,
+                                height: 20.0,
+                              );
+                            case ButtonState.loading:
+                              return const SizedBox(
+                                width: 20.0,
+                                height: 20.0,
+                              );
+                          }
+                        }),
                   ),
                   SvgPicture.asset(
                     'assets/logo_svg.svg',
                     color: Theme.of(context).backgroundColor,
-                    height: MediaQuery.of(context).size.height * 0.35,
+                    height: MediaQuery.of(context).size.height * 0.30,
                   ),
                 ]),
             SizedBox(
@@ -163,14 +162,14 @@ class _HomeState extends State<Home> {
                                 case ButtonState.loading:
                                   return SpinKitPulse(
                                     color: Theme.of(context).backgroundColor,
-                                    size: 70.0,
+                                    size: 60.0,
                                   );
                                 case ButtonState.paused:
                                   return ElevatedButton(
                                     onPressed: pageManager.play,
                                     child: Icon(
                                       Icons.play_arrow_outlined,
-                                      size: 70.0,
+                                      size: 55.0,
                                       color: Theme.of(context).primaryColor,
                                     ),
                                     style: ButtonStyle(
@@ -211,22 +210,17 @@ class _HomeState extends State<Home> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        ValueListenableBuilder<bool>(
-                            valueListenable: pageManager.isFirstSongNotifier,
-                            builder: (_, isFirst, __) {
-                              return IconButton(
-                                onPressed:
-                                    (isFirst) ? null : pageManager.previous,
-                                splashColor: Colors.transparent,
-                                focusColor: Colors.transparent,
-                                highlightColor: Colors.transparent,
-                                icon: FaIcon(
-                                  FontAwesomeIcons.angleLeft,
-                                  color: Theme.of(context).backgroundColor,
-                                  size: 30.0,
-                                ),
-                              );
-                            }),
+                        IconButton(
+                          onPressed: pageManager.previous,
+                          splashColor: Colors.transparent,
+                          focusColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          icon: FaIcon(
+                            FontAwesomeIcons.angleLeft,
+                            color: Theme.of(context).backgroundColor,
+                            size: 30.0,
+                          ),
+                        ),
                         ValueListenableBuilder<String>(
                             valueListenable:
                                 pageManager.currentRadioTitleNotifier,
@@ -241,21 +235,17 @@ class _HomeState extends State<Home> {
                                 ),
                               );
                             }),
-                        ValueListenableBuilder<bool>(
-                            valueListenable: pageManager.isLastSongNotifier,
-                            builder: (_, isLast, __) {
-                              return IconButton(
-                                onPressed: (isLast) ? null : pageManager.next,
-                                splashColor: Colors.transparent,
-                                focusColor: Colors.transparent,
-                                highlightColor: Colors.transparent,
-                                icon: FaIcon(
-                                  FontAwesomeIcons.angleRight,
-                                  color: Theme.of(context).backgroundColor,
-                                  size: 30.0,
-                                ),
-                              );
-                            }),
+                        IconButton(
+                          onPressed: pageManager.next,
+                          splashColor: Colors.transparent,
+                          focusColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          icon: FaIcon(
+                            FontAwesomeIcons.angleRight,
+                            color: Theme.of(context).backgroundColor,
+                            size: 30.0,
+                          ),
+                        ),
                       ],
                     ),
                   ),
