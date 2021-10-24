@@ -68,8 +68,8 @@ class _HomeState extends State<Home> {
                 clipBehavior: Clip.none,
                 children: [
                   Positioned(
-                    left: -6.5,
-                    bottom: MediaQuery.of(context).size.height * 0.05,
+                    left: -6.7,
+                    bottom: MediaQuery.of(context).size.height * 0.04,
                     child: ValueListenableBuilder<ButtonState>(
                         valueListenable: pageManager.playButtonNotifier,
                         builder: (_, value, __) {
