@@ -60,14 +60,6 @@ class MyAudioHandler extends BaseAudioHandler {
           ProcessingState.ready: AudioProcessingState.ready,
           ProcessingState.completed: AudioProcessingState.completed,
         }[_player.processingState]!,
-        repeatMode: const {
-          LoopMode.off: AudioServiceRepeatMode.none,
-          LoopMode.one: AudioServiceRepeatMode.one,
-          LoopMode.all: AudioServiceRepeatMode.all,
-        }[_player.loopMode]!,
-        shuffleMode: (_player.shuffleModeEnabled)
-            ? AudioServiceShuffleMode.all
-            : AudioServiceShuffleMode.none,
         playing: playing,
         updatePosition: _player.position,
         bufferedPosition: _player.bufferedPosition,
@@ -105,10 +97,15 @@ class MyAudioHandler extends BaseAudioHandler {
       // then parse the JSON.
       return CurrentTrack.fromJson(jsonDecode(response.body));
     } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
-      throw Exception('Failed to load current track');
+      retryFuture(fetchCurrentTrack(uri), 2000);
+      return CurrentTrack(id: 12345, artist: 'Online', title: 'Island Pulse', nextTrack: '', cover: 'https://www.islandpulse.lk/images/yellow.png', album: 'Island Pulse');
     }
+  }
+
+  retryFuture(future, delay) {
+    Future.delayed(Duration(milliseconds: delay), () {
+      future();
+    });
   }
 
   void _listenForCurrentSongIndexChanges() {

@@ -92,7 +92,7 @@ class PageManager {
   }
 
   void launchFacebook() {
-    _launchSocial("fb://profile/islandpulse.lk",
+    _launchSocial("fb://page/1087496968305791",
         "https://www.facebook.com/islandpulse.lk");
   }
 
@@ -121,15 +121,9 @@ class PageManager {
   void dragControl(DragEndDetails details) {
     if (details.primaryVelocity == 0) return;
     if (details.primaryVelocity!.compareTo(0) == 1) {
-      if (!isFirstSongNotifier.value) {
-        previous();
-      } else {
-        return;
-      }
-    } else if (!isLastSongNotifier.value) {
-      next();
+      previous();
     } else {
-      return;
+      next();
     }
   }
 
@@ -140,7 +134,6 @@ class PageManager {
   void pause() => _audioHandler.pause();
 
   void seek(Duration position) => _audioHandler.seek(position);
-
   void previous() => _audioHandler.skipToPrevious();
   void next() => _audioHandler.skipToNext();
 
