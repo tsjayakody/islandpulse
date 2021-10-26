@@ -29,6 +29,9 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     getIt<PageManager>().init();
     onStart();
     Timer(const Duration(seconds: 4), () {
@@ -39,6 +42,12 @@ class _MyAppState extends State<MyApp> {
   @override
   void dispose() {
     getIt<PageManager>().dispose();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     super.dispose();
   }
 

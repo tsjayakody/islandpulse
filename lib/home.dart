@@ -24,7 +24,6 @@ class _HomeState extends State<Home> {
 
   @override
   void dispose() {
-    print('hello');
     getIt<PageManager>().dispose();
     super.dispose();
   }
