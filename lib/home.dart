@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -52,32 +53,49 @@ class _HomeState extends State<Home> {
         }
       },
       child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              IconButton(
+                splashRadius: 1.0,
+                splashColor: Colors.transparent,
+                onPressed: widget.toggleCall,
+                icon: Icon(Icons.bedtime_rounded,
+                    color: Theme.of(context).backgroundColor),
+              ),
+              // Your widgets here
+            ],
+          ),
+          // actions: [
+          //   TextButton(
+          //     onPressed: widget.toggleCall,
+          //     child: Icon(
+          //       Icons.bedtime_rounded,
+          //       size: 20.0,
+          //       color: Theme.of(context).primaryColor,
+          //     ),
+          //     style: TextButton.styleFrom(
+          //         backgroundColor: Theme.of(context).backgroundColor,
+          //         shape: const CircleBorder(),
+          //         fixedSize: const Size(15.0, 15.0)),
+          //   ),
+          // ],
+          backgroundColor: Colors.transparent,
+          shadowColor: Colors.transparent,
+          systemOverlayStyle: Theme.of(context).scaffoldBackgroundColor ==
+                  Colors.black
+              ? const SystemUiOverlayStyle(statusBarBrightness: Brightness.dark)
+              : const SystemUiOverlayStyle(
+                  statusBarBrightness: Brightness.light),
+        ),
         body: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    ElevatedButton(
-                      onPressed: widget.toggleCall,
-                      child: Icon(
-                        Icons.bedtime_rounded,
-                        size: 20.0,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      style: ButtonStyle(
-                        padding: MaterialStateProperty.all(
-                          const EdgeInsets.all(10),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
               SizedBox(
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * 0.04,
