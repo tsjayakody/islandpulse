@@ -66,23 +66,8 @@ class _HomeState extends State<Home> {
                 icon: Icon(Icons.bedtime_rounded,
                     color: Theme.of(context).backgroundColor),
               ),
-              // Your widgets here
             ],
           ),
-          // actions: [
-          //   TextButton(
-          //     onPressed: widget.toggleCall,
-          //     child: Icon(
-          //       Icons.bedtime_rounded,
-          //       size: 20.0,
-          //       color: Theme.of(context).primaryColor,
-          //     ),
-          //     style: TextButton.styleFrom(
-          //         backgroundColor: Theme.of(context).backgroundColor,
-          //         shape: const CircleBorder(),
-          //         fixedSize: const Size(15.0, 15.0)),
-          //   ),
-          // ],
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
           systemOverlayStyle: Theme.of(context).scaffoldBackgroundColor ==
@@ -109,26 +94,27 @@ class _HomeState extends State<Home> {
                       left: -6.7,
                       bottom: MediaQuery.of(context).size.height * 0.04,
                       child: ValueListenableBuilder<ButtonState>(
-                          valueListenable: pageManager.playButtonNotifier,
-                          builder: (_, value, __) {
-                            switch (value) {
-                              case ButtonState.playing:
-                                return SpinKitPulse(
-                                  color: Theme.of(context).backgroundColor,
-                                  size: 20.0,
-                                );
-                              case ButtonState.paused:
-                                return const SizedBox(
-                                  width: 20.0,
-                                  height: 20.0,
-                                );
-                              case ButtonState.loading:
-                                return const SizedBox(
-                                  width: 20.0,
-                                  height: 20.0,
-                                );
-                            }
-                          }),
+                        valueListenable: pageManager.playButtonNotifier,
+                        builder: (_, value, __) {
+                          switch (value) {
+                            case ButtonState.playing:
+                              return SpinKitPulse(
+                                color: Theme.of(context).backgroundColor,
+                                size: 20.0,
+                              );
+                            case ButtonState.paused:
+                              return const SizedBox(
+                                width: 20.0,
+                                height: 20.0,
+                              );
+                            case ButtonState.loading:
+                              return const SizedBox(
+                                width: 20.0,
+                                height: 20.0,
+                              );
+                          }
+                        },
+                      ),
                     ),
                     SvgPicture.asset(
                       'assets/logo_svg.svg',
