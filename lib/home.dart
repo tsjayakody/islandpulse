@@ -120,7 +120,7 @@ class _HomeState extends State<Home> {
   SafeArea buildLandscape(BuildContext context, PageManager pageManager) {
     return SafeArea(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           //* row- logo and player
@@ -352,7 +352,7 @@ class _HomeState extends State<Home> {
           Positioned(
             left: -6.7,
             bottom: MediaQuery.of(context).size.height *
-                (isLandscape ? 0.065 : 0.04),
+                (isLandscape ? 0.069 : 0.04),
             child: ValueListenableBuilder<ButtonState>(
               valueListenable: pageManager.playButtonNotifier,
               builder: (_, value, __) {

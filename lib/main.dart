@@ -81,42 +81,47 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: StringConstants.islandPulse,
-      theme: ThemeData(
-        backgroundColor: ColorConstants.defualtBlack,
-        primaryColor: ColorConstants.pulseYellow,
-        scaffoldBackgroundColor: ColorConstants.pulseYellow,
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            primary: ColorConstants.defualtBlack,
-            shape: const CircleBorder(),
-            elevation: 0,
+    // TODO: implement tc shotcuts here
+    return Shortcuts(
+        shortcuts: <LogicalKeySet, Intent>{
+          LogicalKeySet(LogicalKeyboardKey.select): const ActivateIntent(),
+        },
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: StringConstants.islandPulse,
+          theme: ThemeData(
+            backgroundColor: ColorConstants.defualtBlack,
+            primaryColor: ColorConstants.pulseYellow,
+            scaffoldBackgroundColor: ColorConstants.pulseYellow,
+            elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ElevatedButton.styleFrom(
+                primary: ColorConstants.defualtBlack,
+                shape: const CircleBorder(),
+                elevation: 0,
+              ),
+            ),
           ),
-        ),
-      ),
-      darkTheme: ThemeData(
-        backgroundColor: ColorConstants.pulseYellow,
-        primaryColor: ColorConstants.defualtBlack,
-        scaffoldBackgroundColor: ColorConstants.defualtBlack,
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            primary: ColorConstants.pulseYellow,
-            shape: const CircleBorder(),
-            elevation: 0,
+          darkTheme: ThemeData(
+            backgroundColor: ColorConstants.pulseYellow,
+            primaryColor: ColorConstants.defualtBlack,
+            scaffoldBackgroundColor: ColorConstants.defualtBlack,
+            elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ElevatedButton.styleFrom(
+                primary: ColorConstants.pulseYellow,
+                shape: const CircleBorder(),
+                elevation: 0,
+              ),
+            ),
           ),
-        ),
-      ),
-      home: SecondSplash(
-        controller: splashController,
-        decoration: const BoxDecoration(
-          color: ColorConstants.pulseYellow,
-        ),
-        child: const SecondSplashColumn(),
-        next: Home(toggleCall: toggleTheme),
-      ),
-      themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
-    );
+          home: SecondSplash(
+            controller: splashController,
+            decoration: const BoxDecoration(
+              color: ColorConstants.pulseYellow,
+            ),
+            child: const SecondSplashColumn(),
+            next: Home(toggleCall: toggleTheme),
+          ),
+          themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
+        ));
   }
 }
