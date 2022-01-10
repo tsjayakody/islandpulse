@@ -3,13 +3,13 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:islandpulse/constants/constants.dart';
 import 'package:islandpulse/home.dart';
 import 'package:islandpulse/page_manager.dart';
 import 'package:islandpulse/service/service_locator.dart';
+import 'package:islandpulse/widgets/widgets.dart';
 import 'package:secondsplash/secondsplash.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 void main() async {
   await setupServiceLocator();
@@ -27,6 +27,7 @@ class _MyAppState extends State<MyApp> {
   SplashController splashController = SplashController();
   bool isDark = false;
 
+  //* orientation is set to potrait up- only
   @override
   void initState() {
     super.initState();
@@ -54,23 +55,23 @@ class _MyAppState extends State<MyApp> {
 
   onStart() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    if (sharedPreferences.getBool("isDark") != null) {
-      isDark = sharedPreferences.getBool("isDark")!;
+    if (sharedPreferences.getBool(StringConstants.isDark) != null) {
+      isDark = sharedPreferences.getBool(StringConstants.isDark)!;
     } else {
-      sharedPreferences.setBool("isDark", isDark);
+      sharedPreferences.setBool(StringConstants.isDark, isDark);
     }
     setState(() {});
   }
 
   toggleTheme() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    if (sharedPreferences.getBool("isDark") != null &&
-        sharedPreferences.getBool("isDark") == true) {
+    if (sharedPreferences.getBool(StringConstants.isDark) != null &&
+        sharedPreferences.getBool(StringConstants.isDark) == true) {
       isDark = false;
-      sharedPreferences.setBool("isDark", isDark);
+      sharedPreferences.setBool(StringConstants.isDark, isDark);
     } else {
       isDark = true;
-      sharedPreferences.setBool("isDark", isDark);
+      sharedPreferences.setBool(StringConstants.isDark, isDark);
     }
     setState(() {});
   }
@@ -79,26 +80,28 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     return MaterialApp(
-      title: 'Island Pulse',
+      debugShowCheckedModeBanner: false,
+      title: StringConstants.islandPulse,
+      // TODO: extract theme-data to seperate file
       theme: ThemeData(
-        backgroundColor: Colors.black,
-        primaryColor: const Color.fromARGB(255, 255, 241, 0),
-        scaffoldBackgroundColor: const Color.fromARGB(255, 255, 241, 0),
+        backgroundColor: ColorConstants.defualtBlack,
+        primaryColor: ColorConstants.pulseYellow,
+        scaffoldBackgroundColor: ColorConstants.pulseYellow,
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            primary: Colors.black,
+            primary: ColorConstants.defualtBlack,
             shape: const CircleBorder(),
             elevation: 0,
           ),
         ),
       ),
       darkTheme: ThemeData(
-        backgroundColor: const Color.fromARGB(255, 255, 241, 0),
-        primaryColor: Colors.black,
-        scaffoldBackgroundColor: Colors.black,
+        backgroundColor: ColorConstants.pulseYellow,
+        primaryColor: ColorConstants.defualtBlack,
+        scaffoldBackgroundColor: ColorConstants.defualtBlack,
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            primary: const Color.fromARGB(255, 255, 241, 0),
+            primary: ColorConstants.pulseYellow,
             shape: const CircleBorder(),
             elevation: 0,
           ),
@@ -106,55 +109,10 @@ class _MyAppState extends State<MyApp> {
       ),
       home: SecondSplash(
         controller: splashController,
-        decoration:
-            const BoxDecoration(color: Color.fromARGB(255, 255, 241, 0)),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const SizedBox(),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Builder(builder: (context) {
-                  return Image.asset(
-                    'assets/light_theme_logo.png',
-                    height: MediaQuery.of(context).size.height * 0.3,
-                  );
-                }),
-                const Padding(
-                  padding: EdgeInsets.only(top: 5.0),
-                  child: SpinKitThreeBounce(
-                    size: 30.0,
-                    color: Colors.black,
-                  ),
-                )
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 5.0),
-              child: RichText(
-                text: TextSpan(
-                  style: GoogleFonts.roboto(
-                      fontSize: 10.0, fontWeight: FontWeight.w100),
-                  children: const [
-                    TextSpan(
-                      text: 'Developed by ',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    TextSpan(
-                      text: 'Derana Macroentertainment (Pvt) Ltd',
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
+        decoration: const BoxDecoration(
+          color: ColorConstants.pulseYellow,
         ),
+        child: const SecondSplashColumn(),
         next: Home(toggleCall: toggleTheme),
       ),
       themeMode: isDark ? ThemeMode.dark : ThemeMode.light,

@@ -4,8 +4,10 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:islandpulse/constants/constants.dart';
 import 'package:islandpulse/page_manager.dart';
 import 'package:islandpulse/service/service_locator.dart';
+import 'package:islandpulse/widgets/widgets.dart';
 
 import 'notifier/play_button_notifier.dart';
 
@@ -17,12 +19,14 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  //* init-state
   @override
   void initState() {
     super.initState();
     getIt<PageManager>().init();
   }
 
+  //* dispose-state
   @override
   void dispose() {
     getIt<PageManager>().dispose();
@@ -42,7 +46,7 @@ class _HomeState extends State<Home> {
         if (cantExit) {
           //show snackbar
           const snack = SnackBar(
-            content: Text('Press Back button again to Exit'),
+            content: Text(StringConstants.backButtonwarningText),
             duration: Duration(seconds: 2),
           );
           ScaffoldMessenger.of(context).showSnackBar(snack);
@@ -59,12 +63,9 @@ class _HomeState extends State<Home> {
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              IconButton(
-                splashRadius: 1.0,
-                splashColor: Colors.transparent,
-                onPressed: widget.toggleCall,
-                icon: Icon(Icons.bedtime_rounded,
-                    color: Theme.of(context).backgroundColor),
+              CustomButton(
+                onpressed: widget.toggleCall,
+                icon: Icons.bedtime_rounded,
               ),
             ],
           ),
@@ -81,6 +82,7 @@ class _HomeState extends State<Home> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              // TODO: extract here
               SizedBox(
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * 0.04,
@@ -117,7 +119,7 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                     SvgPicture.asset(
-                      'assets/logo_svg.svg',
+                      ImageConstants.logoImage,
                       color: Theme.of(context).backgroundColor,
                       height: MediaQuery.of(context).size.height * 0.30,
                     ),
@@ -129,6 +131,7 @@ class _HomeState extends State<Home> {
                 onHorizontalDragEnd: (DragEndDetails details) =>
                     pageManager.dragControl(details),
                 behavior: HitTestBehavior.opaque,
+                //TODO: make it to a seperate widgets/ methods
                 child: Column(
                   children: [
                     ValueListenableBuilder<String>(
@@ -137,11 +140,11 @@ class _HomeState extends State<Home> {
                           return Container(
                             padding:
                                 const EdgeInsets.only(left: 10.0, right: 10.0),
-                            child: Text(
-                              value,
-                              overflow: TextOverflow.ellipsis,
+                            child: CustomText(
+                              text: value,
+                              textOverflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.center,
-                              style: GoogleFonts.montserrat(
+                              textStyle: GoogleFonts.montserrat(
                                 textStyle: TextStyle(
                                   color: Theme.of(context).backgroundColor,
                                   fontSize: 22.0,
@@ -159,11 +162,11 @@ class _HomeState extends State<Home> {
                             return Container(
                               padding: const EdgeInsets.only(
                                   left: 10.0, right: 10.0),
-                              child: Text(
-                                value,
-                                overflow: TextOverflow.ellipsis,
+                              child: CustomText(
+                                text: value,
+                                textOverflow: TextOverflow.ellipsis,
                                 textAlign: TextAlign.center,
-                                style: GoogleFonts.montserrat(
+                                textStyle: GoogleFonts.montserrat(
                                   textStyle: TextStyle(
                                       color: Theme.of(context).backgroundColor,
                                       fontSize: 16.0,
@@ -190,6 +193,7 @@ class _HomeState extends State<Home> {
                                       size: 60.0,
                                     );
                                   case ButtonState.paused:
+                                    // TODO: 8 make reuable
                                     return ElevatedButton(
                                       onPressed: pageManager.play,
                                       child: Icon(
@@ -207,6 +211,7 @@ class _HomeState extends State<Home> {
                                                       .backgroundColor)),
                                     );
                                   case ButtonState.playing:
+                                    // TODO: 9 make reuable
                                     return ElevatedButton(
                                       onPressed: pageManager.stop,
                                       child: Icon(
@@ -235,16 +240,12 @@ class _HomeState extends State<Home> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          IconButton(
-                            onPressed: pageManager.previous,
-                            splashColor: Colors.transparent,
-                            focusColor: Colors.transparent,
+                          CustomButton(
+                            onpressed: pageManager.previous,
+                            icon: FontAwesomeIcons.angleLeft,
                             highlightColor: Colors.transparent,
-                            icon: FaIcon(
-                              FontAwesomeIcons.angleLeft,
-                              color: Theme.of(context).backgroundColor,
-                              size: 30.0,
-                            ),
+                            iconSize: 30,
+                            focusColor: Colors.transparent,
                           ),
                           ValueListenableBuilder<String>(
                               valueListenable:
@@ -260,16 +261,12 @@ class _HomeState extends State<Home> {
                                   ),
                                 );
                               }),
-                          IconButton(
-                            onPressed: pageManager.next,
-                            splashColor: Colors.transparent,
-                            focusColor: Colors.transparent,
+                          CustomButton(
+                            onpressed: pageManager.next,
+                            icon: FontAwesomeIcons.angleRight,
                             highlightColor: Colors.transparent,
-                            icon: FaIcon(
-                              FontAwesomeIcons.angleRight,
-                              color: Theme.of(context).backgroundColor,
-                              size: 30.0,
-                            ),
+                            iconSize: 30,
+                            focusColor: Colors.transparent,
                           ),
                         ],
                       ),
@@ -281,29 +278,20 @@ class _HomeState extends State<Home> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  ElevatedButton(
-                    onPressed: pageManager.launchFacebook,
-                    child: FaIcon(
-                      FontAwesomeIcons.facebook,
-                      color: Theme.of(context).primaryColor,
-                      size: 16.0,
-                    ),
+                  // facebook button
+                  CustomElevatedFacebookButton(
+                    icon: FontAwesomeIcons.facebook,
+                    onpressed: pageManager.launchFacebook,
                   ),
-                  ElevatedButton(
-                    onPressed: pageManager.launchYoutube,
-                    child: FaIcon(
-                      FontAwesomeIcons.youtube,
-                      color: Theme.of(context).primaryColor,
-                      size: 16.0,
-                    ),
+                  // youtube button
+                  CustomElevatedFacebookButton(
+                    icon: FontAwesomeIcons.youtube,
+                    onpressed: pageManager.launchYoutube,
                   ),
-                  ElevatedButton(
-                    onPressed: pageManager.launchInstagram,
-                    child: FaIcon(
-                      FontAwesomeIcons.instagram,
-                      color: Theme.of(context).primaryColor,
-                      size: 16.0,
-                    ),
+                  // instagram button
+                  CustomElevatedFacebookButton(
+                    icon: FontAwesomeIcons.instagram,
+                    onpressed: pageManager.launchInstagram,
                   ),
                 ],
               ),
