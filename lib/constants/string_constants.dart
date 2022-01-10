@@ -12,9 +12,9 @@ class StringConstants {
   static const String backButtonwarningText = 'Press Back button again to Exit';
 
   // social media URLs
-  static const String facebookURL = 'fb://page/1087496968305791';
+  static const String facebookURL = "fb://page/1087496968305791";
   static const String fallbackFacebookURL =
-      'https://www.facebook.com/islandpulse.lk';
+      "https://www.facebook.com/islandpulse.lk";
 
   static const String instagramURL = 'https://www.instagram.com/pulse.lk/';
   static const String fallbackInstagramURL =
