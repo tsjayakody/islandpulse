@@ -100,7 +100,7 @@ class _HomeState extends State<Home> {
             height: MediaQuery.of(context).size.height * 0.04,
           ),
           //*island-pulse logo
-          islandPulseLogo(context, pageManager, 0.30),
+          islandPulseLogo(context, pageManager, 0.30, false),
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.04,
           ),
@@ -128,10 +128,13 @@ class _HomeState extends State<Home> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               //*island-pulse logo
-              islandPulseLogo(context, pageManager, 0.50),
+              islandPulseLogo(context, pageManager, 0.50, true),
 
               //* music player
-              islandPulseMusicPlayer(pageManager, context)
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.5,
+                child: islandPulseMusicPlayer(pageManager, context),
+              )
             ],
           ),
           //* social media buttons
@@ -318,6 +321,7 @@ class _HomeState extends State<Home> {
     BuildContext context,
     PageManager pageManager,
     double logoImageHeight,
+    bool isLandscape,
   ) {
     return Stack(
         alignment: Alignment.center,
@@ -326,7 +330,8 @@ class _HomeState extends State<Home> {
         children: [
           Positioned(
             left: -6.7,
-            bottom: MediaQuery.of(context).size.height * 0.04,
+            bottom: MediaQuery.of(context).size.height *
+                (isLandscape ? 0.065 : 0.04),
             child: ValueListenableBuilder<ButtonState>(
               valueListenable: pageManager.playButtonNotifier,
               builder: (_, value, __) {
