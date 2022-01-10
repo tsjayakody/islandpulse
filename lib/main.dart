@@ -33,6 +33,8 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
     ]);
     getIt<PageManager>().init();
     onStart();

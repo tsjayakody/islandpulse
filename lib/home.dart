@@ -77,231 +77,277 @@ class _HomeState extends State<Home> {
               : const SystemUiOverlayStyle(
                   statusBarBrightness: Brightness.light),
         ),
-        body: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
+        body: OrientationBuilder(builder: (_, orientation) {
+          if (orientation == Orientation.portrait) {
+            return buildPotrait(context, pageManager);
+          } else {
+            return buildLandscape(context, pageManager);
+          } // else show the landscape one
+        }),
+      ),
+    );
+  }
+
+  //* potrait orientation mode
+  SafeArea buildPotrait(BuildContext context, PageManager pageManager) {
+    return SafeArea(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // TODO: extract here
+          SizedBox(
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height * 0.04,
+          ),
+          //*island-pulse logo
+          islandPulseLogo(context, pageManager),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.04,
+          ),
+          //* music player
+          islandPulseMusicPlayer(pageManager, context),
+          const Spacer(),
+          //* social media buttons
+          islandPulseSocialMediaButtons(pageManager),
+          const SizedBox(
+            height: 10.0,
+          ),
+        ],
+      ),
+    );
+  }
+
+  SafeArea buildLandscape(BuildContext context, PageManager pageManager) {
+    return SafeArea(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          //* row- logo and player
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              // TODO: extract here
-              SizedBox(
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height * 0.04,
-              ),
-              Stack(
-                  alignment: Alignment.center,
-                  fit: StackFit.loose,
-                  clipBehavior: Clip.none,
-                  children: [
-                    Positioned(
-                      left: -6.7,
-                      bottom: MediaQuery.of(context).size.height * 0.04,
-                      child: ValueListenableBuilder<ButtonState>(
-                        valueListenable: pageManager.playButtonNotifier,
-                        builder: (_, value, __) {
-                          switch (value) {
-                            case ButtonState.playing:
-                              return SpinKitPulse(
-                                color: Theme.of(context).backgroundColor,
-                                size: 20.0,
-                              );
-                            case ButtonState.paused:
-                              return const SizedBox(
-                                width: 20.0,
-                                height: 20.0,
-                              );
-                            case ButtonState.loading:
-                              return const SizedBox(
-                                width: 20.0,
-                                height: 20.0,
-                              );
-                          }
-                        },
+              //*island-pulse logo
+              islandPulseLogo(context, pageManager),
+
+              //* music player
+              islandPulseMusicPlayer(pageManager, context)
+            ],
+          ),
+          //* social media buttons
+          islandPulseSocialMediaButtons(pageManager),
+          const SizedBox(
+            height: 10.0,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Row islandPulseSocialMediaButtons(PageManager pageManager) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        // facebook button
+        CustomElevatedFacebookButton(
+          icon: FontAwesomeIcons.facebook,
+          onpressed: pageManager.launchFacebook,
+        ),
+        // youtube button
+        CustomElevatedFacebookButton(
+          icon: FontAwesomeIcons.youtube,
+          onpressed: pageManager.launchYoutube,
+        ),
+        // instagram button
+        CustomElevatedFacebookButton(
+          icon: FontAwesomeIcons.instagram,
+          onpressed: pageManager.launchInstagram,
+        ),
+      ],
+    );
+  }
+
+  GestureDetector islandPulseMusicPlayer(
+      PageManager pageManager, BuildContext context) {
+    return GestureDetector(
+      onHorizontalDragEnd: (DragEndDetails details) =>
+          pageManager.dragControl(details),
+      behavior: HitTestBehavior.opaque,
+      //TODO: make it to a seperate widgets/ methods
+      child: Column(
+        children: [
+          ValueListenableBuilder<String>(
+              valueListenable: pageManager.currentSongTitleNotifier,
+              builder: (_, value, __) {
+                return Container(
+                  padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                  child: CustomText(
+                    text: value,
+                    textOverflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                    textStyle: GoogleFonts.montserrat(
+                      textStyle: TextStyle(
+                        color: Theme.of(context).backgroundColor,
+                        fontSize: 22.0,
                       ),
                     ),
-                    SvgPicture.asset(
-                      ImageConstants.logoImage,
-                      color: Theme.of(context).backgroundColor,
-                      height: MediaQuery.of(context).size.height * 0.30,
-                    ),
-                  ]),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.04,
-              ),
-              GestureDetector(
-                onHorizontalDragEnd: (DragEndDetails details) =>
-                    pageManager.dragControl(details),
-                behavior: HitTestBehavior.opaque,
-                //TODO: make it to a seperate widgets/ methods
-                child: Column(
-                  children: [
-                    ValueListenableBuilder<String>(
-                        valueListenable: pageManager.currentSongTitleNotifier,
-                        builder: (_, value, __) {
-                          return Container(
-                            padding:
-                                const EdgeInsets.only(left: 10.0, right: 10.0),
-                            child: CustomText(
-                              text: value,
-                              textOverflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                              textStyle: GoogleFonts.montserrat(
-                                textStyle: TextStyle(
-                                  color: Theme.of(context).backgroundColor,
-                                  fontSize: 22.0,
-                                ),
-                              ),
-                            ),
-                          );
-                        }),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 5.0, 0, 0),
-                      child: ValueListenableBuilder<String>(
-                          valueListenable:
-                              pageManager.currentSongArtistNotifier,
-                          builder: (_, value, __) {
-                            return Container(
-                              padding: const EdgeInsets.only(
-                                  left: 10.0, right: 10.0),
-                              child: CustomText(
-                                text: value,
-                                textOverflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.center,
-                                textStyle: GoogleFonts.montserrat(
-                                  textStyle: TextStyle(
-                                      color: Theme.of(context).backgroundColor,
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.w200),
-                                ),
-                              ),
-                            );
-                          }),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
-                      child: SizedBox(
-                        height: 100.0,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ValueListenableBuilder<ButtonState>(
-                              valueListenable: pageManager.playButtonNotifier,
-                              builder: (_, value, __) {
-                                switch (value) {
-                                  case ButtonState.loading:
-                                    return SpinKitPulse(
-                                      color: Theme.of(context).backgroundColor,
-                                      size: 60.0,
-                                    );
-                                  case ButtonState.paused:
-                                    // TODO: 8 make reuable
-                                    return ElevatedButton(
-                                      onPressed: pageManager.play,
-                                      child: Icon(
-                                        Icons.play_arrow_outlined,
-                                        size: 55.0,
-                                        color: Theme.of(context).primaryColor,
-                                      ),
-                                      style: ButtonStyle(
-                                          padding: MaterialStateProperty.all(
-                                            const EdgeInsets.all(10),
-                                          ),
-                                          backgroundColor:
-                                              MaterialStateProperty.all(
-                                                  Theme.of(context)
-                                                      .backgroundColor)),
-                                    );
-                                  case ButtonState.playing:
-                                    // TODO: 9 make reuable
-                                    return ElevatedButton(
-                                      onPressed: pageManager.stop,
-                                      child: Icon(
-                                        Icons.stop_outlined,
-                                        size: 55.0,
-                                        color: Theme.of(context).primaryColor,
-                                      ),
-                                      style: ButtonStyle(
-                                          padding: MaterialStateProperty.all(
-                                            const EdgeInsets.all(10),
-                                          ),
-                                          backgroundColor:
-                                              MaterialStateProperty.all(
-                                                  Theme.of(context)
-                                                      .backgroundColor)),
-                                    );
-                                }
-                              },
-                            ),
-                          ],
-                        ),
+                  ),
+                );
+              }),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 5.0, 0, 0),
+            child: ValueListenableBuilder<String>(
+                valueListenable: pageManager.currentSongArtistNotifier,
+                builder: (_, value, __) {
+                  return Container(
+                    padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                    child: CustomText(
+                      text: value,
+                      textOverflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                      textStyle: GoogleFonts.montserrat(
+                        textStyle: TextStyle(
+                            color: Theme.of(context).backgroundColor,
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w200),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 0.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CustomButton(
-                            onpressed: pageManager.previous,
-                            icon: FontAwesomeIcons.angleLeft,
-                            highlightColor: Colors.transparent,
-                            iconSize: 30,
-                            focusColor: Colors.transparent,
-                          ),
-                          ValueListenableBuilder<String>(
-                              valueListenable:
-                                  pageManager.currentRadioTitleNotifier,
-                              builder: (_, value, __) {
-                                return Text(
-                                  value,
-                                  style: GoogleFonts.montserrat(
-                                    textStyle: TextStyle(
-                                      color: Theme.of(context).backgroundColor,
-                                      fontSize: 22.0,
-                                    ),
-                                  ),
-                                );
-                              }),
-                          CustomButton(
-                            onpressed: pageManager.next,
-                            icon: FontAwesomeIcons.angleRight,
-                            highlightColor: Colors.transparent,
-                            iconSize: 30,
-                            focusColor: Colors.transparent,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const Spacer(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  );
+                }),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0),
+            child: SizedBox(
+              height: 100.0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // facebook button
-                  CustomElevatedFacebookButton(
-                    icon: FontAwesomeIcons.facebook,
-                    onpressed: pageManager.launchFacebook,
-                  ),
-                  // youtube button
-                  CustomElevatedFacebookButton(
-                    icon: FontAwesomeIcons.youtube,
-                    onpressed: pageManager.launchYoutube,
-                  ),
-                  // instagram button
-                  CustomElevatedFacebookButton(
-                    icon: FontAwesomeIcons.instagram,
-                    onpressed: pageManager.launchInstagram,
+                  ValueListenableBuilder<ButtonState>(
+                    valueListenable: pageManager.playButtonNotifier,
+                    builder: (_, value, __) {
+                      switch (value) {
+                        case ButtonState.loading:
+                          return SpinKitPulse(
+                            color: Theme.of(context).backgroundColor,
+                            size: 60.0,
+                          );
+                        case ButtonState.paused:
+                          // TODO: 8 make reuable
+                          return ElevatedButton(
+                            onPressed: pageManager.play,
+                            child: Icon(
+                              Icons.play_arrow_outlined,
+                              size: 55.0,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                            style: ButtonStyle(
+                                padding: MaterialStateProperty.all(
+                                  const EdgeInsets.all(10),
+                                ),
+                                backgroundColor: MaterialStateProperty.all(
+                                    Theme.of(context).backgroundColor)),
+                          );
+                        case ButtonState.playing:
+                          // TODO: 9 make reuable
+                          return ElevatedButton(
+                            onPressed: pageManager.stop,
+                            child: Icon(
+                              Icons.stop_outlined,
+                              size: 55.0,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                            style: ButtonStyle(
+                                padding: MaterialStateProperty.all(
+                                  const EdgeInsets.all(10),
+                                ),
+                                backgroundColor: MaterialStateProperty.all(
+                                    Theme.of(context).backgroundColor)),
+                          );
+                      }
+                    },
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 10.0,
-              ),
-            ],
+            ),
           ),
-        ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 0.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomButton(
+                  onpressed: pageManager.previous,
+                  icon: FontAwesomeIcons.angleLeft,
+                  highlightColor: Colors.transparent,
+                  iconSize: 30,
+                  focusColor: Colors.transparent,
+                ),
+                ValueListenableBuilder<String>(
+                    valueListenable: pageManager.currentRadioTitleNotifier,
+                    builder: (_, value, __) {
+                      return Text(
+                        value,
+                        style: GoogleFonts.montserrat(
+                          textStyle: TextStyle(
+                            color: Theme.of(context).backgroundColor,
+                            fontSize: 22.0,
+                          ),
+                        ),
+                      );
+                    }),
+                CustomButton(
+                  onpressed: pageManager.next,
+                  icon: FontAwesomeIcons.angleRight,
+                  highlightColor: Colors.transparent,
+                  iconSize: 30,
+                  focusColor: Colors.transparent,
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
+  }
+
+  Stack islandPulseLogo(BuildContext context, PageManager pageManager) {
+    return Stack(
+        alignment: Alignment.center,
+        fit: StackFit.loose,
+        clipBehavior: Clip.none,
+        children: [
+          Positioned(
+            left: -6.7,
+            bottom: MediaQuery.of(context).size.height * 0.04,
+            child: ValueListenableBuilder<ButtonState>(
+              valueListenable: pageManager.playButtonNotifier,
+              builder: (_, value, __) {
+                switch (value) {
+                  case ButtonState.playing:
+                    return SpinKitPulse(
+                      color: Theme.of(context).backgroundColor,
+                      size: 20.0,
+                    );
+                  case ButtonState.paused:
+                    return const SizedBox(
+                      width: 20.0,
+                      height: 20.0,
+                    );
+                  case ButtonState.loading:
+                    return const SizedBox(
+                      width: 20.0,
+                      height: 20.0,
+                    );
+                }
+              },
+            ),
+          ),
+          SvgPicture.asset(
+            ImageConstants.logoImage,
+            color: Theme.of(context).backgroundColor,
+            height: MediaQuery.of(context).size.height * 0.30,
+          ),
+        ]);
   }
 }
