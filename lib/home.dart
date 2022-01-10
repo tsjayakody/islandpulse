@@ -188,131 +188,152 @@ class _HomeState extends State<Home> {
           ValueListenableBuilder<String>(
               valueListenable: pageManager.currentSongTitleNotifier,
               builder: (_, value, __) {
-                return Container(
-                  padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                  child: CustomText(
-                    text: value,
-                    textOverflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.center,
-                    textStyle: GoogleFonts.montserrat(
-                      textStyle: TextStyle(
-                        color: Theme.of(context).backgroundColor,
-                        fontSize: 22.0,
-                      ),
-                    ),
-                  ),
-                );
+                // * album name text widget
+                return albumNameText(value, context);
               }),
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 5.0, 0, 0),
             child: ValueListenableBuilder<String>(
                 valueListenable: pageManager.currentSongArtistNotifier,
                 builder: (_, value, __) {
-                  return Container(
-                    padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                    child: CustomText(
-                      text: value,
-                      textOverflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.center,
-                      textStyle: GoogleFonts.montserrat(
-                        textStyle: TextStyle(
-                            color: Theme.of(context).backgroundColor,
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w200),
-                      ),
-                    ),
-                  );
+                  // * song name text widget
+                  return songNameText(value, context);
                 }),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: SizedBox(
-              height: 100.0,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ValueListenableBuilder<ButtonState>(
-                    valueListenable: pageManager.playButtonNotifier,
-                    builder: (_, value, __) {
-                      switch (value) {
-                        case ButtonState.loading:
-                          return SpinKitPulse(
-                            color: Theme.of(context).backgroundColor,
-                            size: 60.0,
-                          );
-                        case ButtonState.paused:
-                          return ElevatedButton(
-                            onPressed: pageManager.play,
-                            child: Icon(
-                              Icons.play_arrow_outlined,
-                              size: 55.0,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                            style: ButtonStyle(
-                                padding: MaterialStateProperty.all(
-                                  const EdgeInsets.all(10),
-                                ),
-                                backgroundColor: MaterialStateProperty.all(
-                                    Theme.of(context).backgroundColor)),
-                          );
-                        case ButtonState.playing:
-                          return ElevatedButton(
-                            onPressed: pageManager.stop,
-                            child: Icon(
-                              Icons.stop_outlined,
-                              size: 55.0,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                            style: ButtonStyle(
-                                padding: MaterialStateProperty.all(
-                                  const EdgeInsets.all(10),
-                                ),
-                                backgroundColor: MaterialStateProperty.all(
-                                    Theme.of(context).backgroundColor)),
-                          );
-                      }
-                    },
-                  ),
-                ],
-              ),
-            ),
+          //* song play/pause button
+          playPauseButton(pageManager, context),
+          //* song skip widget (back and forward album name)
+          songBackwardForwardButtons(pageManager, context),
+        ],
+      ),
+    );
+  }
+
+  Container songNameText(String value, BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+      child: CustomText(
+        text: value,
+        textOverflow: TextOverflow.ellipsis,
+        textAlign: TextAlign.center,
+        textStyle: GoogleFonts.montserrat(
+          textStyle: TextStyle(
+              color: Theme.of(context).backgroundColor,
+              fontSize: 16.0,
+              fontWeight: FontWeight.w200),
+        ),
+      ),
+    );
+  }
+
+  Container albumNameText(String value, BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+      child: CustomText(
+        text: value,
+        textOverflow: TextOverflow.ellipsis,
+        textAlign: TextAlign.center,
+        textStyle: GoogleFonts.montserrat(
+          textStyle: TextStyle(
+            color: Theme.of(context).backgroundColor,
+            fontSize: 22.0,
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 0.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomButton(
-                  onpressed: pageManager.previous,
-                  icon: FontAwesomeIcons.angleLeft,
-                  highlightColor: Colors.transparent,
-                  iconSize: 30,
-                  focusColor: Colors.transparent,
-                ),
-                ValueListenableBuilder<String>(
-                    valueListenable: pageManager.currentRadioTitleNotifier,
-                    builder: (_, value, __) {
-                      return Text(
-                        value,
-                        style: GoogleFonts.montserrat(
-                          textStyle: TextStyle(
-                            color: Theme.of(context).backgroundColor,
-                            fontSize: 22.0,
-                          ),
-                        ),
-                      );
-                    }),
-                CustomButton(
-                  onpressed: pageManager.next,
-                  icon: FontAwesomeIcons.angleRight,
-                  highlightColor: Colors.transparent,
-                  iconSize: 30,
-                  focusColor: Colors.transparent,
-                ),
-              ],
-            ),
+        ),
+      ),
+    );
+  }
+
+  Padding songBackwardForwardButtons(
+      PageManager pageManager, BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 0.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          CustomButton(
+            onpressed: pageManager.previous,
+            icon: FontAwesomeIcons.angleLeft,
+            highlightColor: Colors.transparent,
+            iconSize: 30,
+            focusColor: Colors.transparent,
+          ),
+          ValueListenableBuilder<String>(
+              valueListenable: pageManager.currentRadioTitleNotifier,
+              builder: (_, value, __) {
+                return Text(
+                  value,
+                  style: GoogleFonts.montserrat(
+                    textStyle: TextStyle(
+                      color: Theme.of(context).backgroundColor,
+                      fontSize: 22.0,
+                    ),
+                  ),
+                );
+              }),
+          CustomButton(
+            onpressed: pageManager.next,
+            icon: FontAwesomeIcons.angleRight,
+            highlightColor: Colors.transparent,
+            iconSize: 30,
+            focusColor: Colors.transparent,
           ),
         ],
+      ),
+    );
+  }
+
+  Padding playPauseButton(PageManager pageManager, BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10.0),
+      child: SizedBox(
+        height: 100.0,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ValueListenableBuilder<ButtonState>(
+              valueListenable: pageManager.playButtonNotifier,
+              builder: (_, value, __) {
+                switch (value) {
+                  case ButtonState.loading:
+                    return SpinKitPulse(
+                      color: Theme.of(context).backgroundColor,
+                      size: 60.0,
+                    );
+                  case ButtonState.paused:
+                    return ElevatedButton(
+                      onPressed: pageManager.play,
+                      child: Icon(
+                        Icons.play_arrow_outlined,
+                        size: 55.0,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      style: ButtonStyle(
+                          padding: MaterialStateProperty.all(
+                            const EdgeInsets.all(10),
+                          ),
+                          backgroundColor: MaterialStateProperty.all(
+                              Theme.of(context).backgroundColor)),
+                    );
+                  case ButtonState.playing:
+                    return ElevatedButton(
+                      onPressed: pageManager.stop,
+                      child: Icon(
+                        Icons.stop_outlined,
+                        size: 55.0,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      style: ButtonStyle(
+                          padding: MaterialStateProperty.all(
+                            const EdgeInsets.all(10),
+                          ),
+                          backgroundColor: MaterialStateProperty.all(
+                              Theme.of(context).backgroundColor)),
+                    );
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
