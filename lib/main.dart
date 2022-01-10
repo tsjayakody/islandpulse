@@ -84,7 +84,6 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: StringConstants.islandPulse,
-      // TODO: extract theme-data to seperate file
       theme: ThemeData(
         backgroundColor: ColorConstants.defualtBlack,
         primaryColor: ColorConstants.pulseYellow,

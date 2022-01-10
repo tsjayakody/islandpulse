@@ -95,13 +95,12 @@ class _HomeState extends State<Home> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // TODO: extract here
           SizedBox(
             width: double.infinity,
             height: MediaQuery.of(context).size.height * 0.04,
           ),
           //*island-pulse logo
-          islandPulseLogo(context, pageManager),
+          islandPulseLogo(context, pageManager, 0.30),
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.04,
           ),
@@ -109,7 +108,7 @@ class _HomeState extends State<Home> {
           islandPulseMusicPlayer(pageManager, context),
           const Spacer(),
           //* social media buttons
-          islandPulseSocialMediaButtons(pageManager),
+          islandPulseSocialMediaButtons(pageManager, false),
           const SizedBox(
             height: 10.0,
           ),
@@ -129,14 +128,14 @@ class _HomeState extends State<Home> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               //*island-pulse logo
-              islandPulseLogo(context, pageManager),
+              islandPulseLogo(context, pageManager, 0.50),
 
               //* music player
               islandPulseMusicPlayer(pageManager, context)
             ],
           ),
           //* social media buttons
-          islandPulseSocialMediaButtons(pageManager),
+          islandPulseSocialMediaButtons(pageManager, true),
           const SizedBox(
             height: 10.0,
           ),
@@ -145,25 +144,32 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Row islandPulseSocialMediaButtons(PageManager pageManager) {
+  Row islandPulseSocialMediaButtons(
+    PageManager pageManager,
+    bool isLandscape,
+  ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
+        isLandscape ? const Spacer() : const SizedBox.shrink(),
         // facebook button
         CustomElevatedFacebookButton(
           icon: FontAwesomeIcons.facebook,
           onpressed: pageManager.launchFacebook,
         ),
         // youtube button
+        isLandscape ? const SizedBox(width: 20) : const SizedBox.shrink(),
         CustomElevatedFacebookButton(
           icon: FontAwesomeIcons.youtube,
           onpressed: pageManager.launchYoutube,
         ),
         // instagram button
+        isLandscape ? const SizedBox(width: 20) : const SizedBox.shrink(),
         CustomElevatedFacebookButton(
           icon: FontAwesomeIcons.instagram,
           onpressed: pageManager.launchInstagram,
         ),
+        isLandscape ? const Spacer() : const SizedBox.shrink(),
       ],
     );
   }
@@ -174,7 +180,6 @@ class _HomeState extends State<Home> {
       onHorizontalDragEnd: (DragEndDetails details) =>
           pageManager.dragControl(details),
       behavior: HitTestBehavior.opaque,
-      //TODO: make it to a seperate widgets/ methods
       child: Column(
         children: [
           ValueListenableBuilder<String>(
@@ -233,7 +238,6 @@ class _HomeState extends State<Home> {
                             size: 60.0,
                           );
                         case ButtonState.paused:
-                          // TODO: 8 make reuable
                           return ElevatedButton(
                             onPressed: pageManager.play,
                             child: Icon(
@@ -249,7 +253,6 @@ class _HomeState extends State<Home> {
                                     Theme.of(context).backgroundColor)),
                           );
                         case ButtonState.playing:
-                          // TODO: 9 make reuable
                           return ElevatedButton(
                             onPressed: pageManager.stop,
                             child: Icon(
@@ -311,7 +314,11 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Stack islandPulseLogo(BuildContext context, PageManager pageManager) {
+  Stack islandPulseLogo(
+    BuildContext context,
+    PageManager pageManager,
+    double logoImageHeight,
+  ) {
     return Stack(
         alignment: Alignment.center,
         fit: StackFit.loose,
@@ -346,7 +353,7 @@ class _HomeState extends State<Home> {
           SvgPicture.asset(
             ImageConstants.logoImage,
             color: Theme.of(context).backgroundColor,
-            height: MediaQuery.of(context).size.height * 0.30,
+            height: MediaQuery.of(context).size.height * logoImageHeight,
           ),
         ]);
   }
