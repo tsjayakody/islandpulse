@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
+import 'package:islandpulse/constants/constants.dart';
 import 'package:islandpulse/service/playlist_repository.dart';
 import 'package:islandpulse/service/service_locator.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -87,23 +88,23 @@ class PageManager {
   }
 
   void launchWhatsapp() {
-    _launchSocial("https://wa.me/+94707078573/?text=''",
-        "https://api.whatsapp.com/send?phone=+94707078573=''");
+    _launchSocial(
+        StringConstants.whatsappURL, StringConstants.fallbackWhatsappURL);
   }
 
   void launchFacebook() {
-    _launchSocial("fb://page/1087496968305791",
-        "https://www.facebook.com/islandpulse.lk");
+    _launchSocial(
+        StringConstants.facebookURL, StringConstants.fallbackFacebookURL);
   }
 
   void launchInstagram() {
-    _launchSocial('https://www.instagram.com/pulse.lk/',
-        'https://www.instagram.com/pulse.lk/');
+    _launchSocial(
+        StringConstants.instagramURL, StringConstants.fallbackInstagramURL);
   }
 
   void launchYoutube() {
-    _launchSocial('https://www.youtube.com/channel/UCkFyITwomCDX0ntPGz66xkQ',
-        'https://www.youtube.com/channel/UCkFyITwomCDX0ntPGz66xkQ');
+    _launchSocial(
+        StringConstants.youtubeURL, StringConstants.fallbackYoutubeURL);
   }
 
   void _launchSocial(String url, String fallbackUrl) async {
