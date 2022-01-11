@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
@@ -93,8 +94,13 @@ class PageManager {
   }
 
   void launchFacebook() {
-    _launchSocial(
-        StringConstants.facebookURL, StringConstants.fallbackFacebookURL);
+    if (Platform.isIOS) {
+      _launchSocial(StringConstants.facebookURLIOS,
+          StringConstants.fallbackFacebookURLIOS);
+    } else {
+      _launchSocial(
+          StringConstants.facebookURL, StringConstants.fallbackFacebookURL);
+    }
   }
 
   void launchInstagram() {

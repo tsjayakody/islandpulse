@@ -71,11 +71,18 @@ class _HomeState extends State<Home> {
           ),
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
-          systemOverlayStyle: Theme.of(context).scaffoldBackgroundColor ==
-                  Colors.black
-              ? const SystemUiOverlayStyle(statusBarBrightness: Brightness.dark)
-              : const SystemUiOverlayStyle(
-                  statusBarBrightness: Brightness.light),
+          systemOverlayStyle:
+              Theme.of(context).scaffoldBackgroundColor == Colors.black
+                  ? const SystemUiOverlayStyle(
+                      statusBarBrightness: Brightness.dark,
+                      statusBarIconBrightness: Brightness.light,
+                      statusBarColor: Colors.transparent,
+                    )
+                  : const SystemUiOverlayStyle(
+                      statusBarBrightness: Brightness.light,
+                      statusBarIconBrightness: Brightness.dark,
+                      statusBarColor: Colors.transparent,
+                    ),
         ),
         body: OrientationBuilder(builder: (_, orientation) {
           if (orientation == Orientation.portrait) {

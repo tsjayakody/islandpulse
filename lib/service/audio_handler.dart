@@ -90,15 +90,32 @@ class MyAudioHandler extends BaseAudioHandler {
   }
 
   Future<CurrentTrack> fetchCurrentTrack(uri) async {
-    final response = await http.get(Uri.parse(uri));
+    try {
+      final response = await http.get(Uri.parse(uri));
 
-    if (response.statusCode == 200) {
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
-      return CurrentTrack.fromJson(jsonDecode(response.body));
-    } else {
-      retryFuture(fetchCurrentTrack(uri), 2000);
-      return CurrentTrack(id: 12345, artist: 'Online', title: 'Island Pulse', nextTrack: '', cover: 'https://www.islandpulse.lk/images/yellow.png', album: 'Island Pulse');
+      if (response.statusCode == 200) {
+        // If the server did return a 200 OK response,
+        // then parse the JSON.
+        return CurrentTrack.fromJson(jsonDecode(response.body));
+      } else {
+        retryFuture(fetchCurrentTrack(uri), 2000);
+        return CurrentTrack(
+            id: 12345,
+            artist: 'Online',
+            title: 'Island Pulse',
+            nextTrack: '',
+            cover: 'https://www.islandpulse.lk/images/yellow.png',
+            album: 'Island Pulse');
+      }
+    } catch (e) {
+      print(e.toString());
+      return CurrentTrack(
+          id: 12345,
+          artist: 'Online',
+          title: 'Island Pulse',
+          nextTrack: '',
+          cover: 'https://www.islandpulse.lk/images/yellow.png',
+          album: 'Island Pulse');
     }
   }
 

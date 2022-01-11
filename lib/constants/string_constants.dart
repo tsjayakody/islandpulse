@@ -16,6 +16,11 @@ class StringConstants {
   static const String fallbackFacebookURL =
       "https://www.facebook.com/islandpulse.lk";
 
+  static const String facebookURLIOS =
+      "https://www.facebook.com/islandpulse.lk";
+  static const String fallbackFacebookURLIOS =
+      "https://www.facebook.com/islandpulse.lk";
+
   static const String instagramURL = 'https://www.instagram.com/pulse.lk/';
   static const String fallbackInstagramURL =
       'https://www.instagram.com/pulse.lk/';
