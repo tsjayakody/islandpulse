@@ -108,7 +108,7 @@ class MyAudioHandler extends BaseAudioHandler {
             album: 'Island Pulse');
       }
     } catch (e) {
-      print(e.toString());
+      // print(e.toString());
       return CurrentTrack(
           id: 12345,
           artist: 'Online',

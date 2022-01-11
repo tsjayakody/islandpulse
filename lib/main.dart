@@ -81,6 +81,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+    //TODO: -- implement rawkeyboardlistner
     return Shortcuts(
         shortcuts: <LogicalKeySet, Intent>{
           LogicalKeySet(LogicalKeyboardKey.select): const ActivateIntent(),
@@ -99,6 +100,7 @@ class _MyAppState extends State<MyApp> {
                 elevation: 0,
               ),
             ),
+            brightness: Brightness.light,
           ),
           darkTheme: ThemeData(
             backgroundColor: ColorConstants.pulseYellow,
@@ -111,6 +113,7 @@ class _MyAppState extends State<MyApp> {
                 elevation: 0,
               ),
             ),
+            brightness: Brightness.dark,
           ),
           home: SecondSplash(
             controller: splashController,
