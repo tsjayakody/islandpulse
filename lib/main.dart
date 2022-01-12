@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:islandpulse/config/config.dart';
 import 'package:islandpulse/constants/constants.dart';
 import 'package:islandpulse/home.dart';
 import 'package:islandpulse/page_manager.dart';
@@ -82,45 +83,24 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     return Shortcuts(
-        shortcuts: <LogicalKeySet, Intent>{
-          LogicalKeySet(LogicalKeyboardKey.select): const ActivateIntent(),
-        },
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: StringConstants.islandPulse,
-          theme: ThemeData(
-            backgroundColor: ColorConstants.defualtBlack,
-            primaryColor: ColorConstants.pulseYellow,
-            scaffoldBackgroundColor: ColorConstants.pulseYellow,
-            elevatedButtonTheme: ElevatedButtonThemeData(
-              style: ElevatedButton.styleFrom(
-                primary: ColorConstants.defualtBlack,
-                shape: const CircleBorder(),
-                elevation: 0,
-              ),
-            ),
+      shortcuts: <LogicalKeySet, Intent>{
+        LogicalKeySet(LogicalKeyboardKey.select): const ActivateIntent(),
+      },
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: StringConstants.islandPulse,
+        theme: IslandpulseTheme.light(),
+        darkTheme: IslandpulseTheme.dark(),
+        home: SecondSplash(
+          controller: splashController,
+          decoration: const BoxDecoration(
+            color: ColorConstants.pulseYellow,
           ),
-          darkTheme: ThemeData(
-            backgroundColor: ColorConstants.pulseYellow,
-            primaryColor: ColorConstants.defualtBlack,
-            scaffoldBackgroundColor: ColorConstants.defualtBlack,
-            elevatedButtonTheme: ElevatedButtonThemeData(
-              style: ElevatedButton.styleFrom(
-                primary: ColorConstants.pulseYellow,
-                shape: const CircleBorder(),
-                elevation: 0,
-              ),
-            ),
-          ),
-          home: SecondSplash(
-            controller: splashController,
-            decoration: const BoxDecoration(
-              color: ColorConstants.pulseYellow,
-            ),
-            child: const SecondSplashColumn(),
-            next: Home(toggleCall: toggleTheme),
-          ),
-          themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
-        ));
+          child: const SecondSplashColumn(),
+          next: Home(toggleCall: toggleTheme),
+        ),
+        themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
+      ),
+    );
   }
 }

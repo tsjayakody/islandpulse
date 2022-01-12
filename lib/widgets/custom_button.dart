@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:islandpulse/config/config.dart';
+import 'package:islandpulse/constants/color_constants.dart';
 
 class CustomButton extends StatelessWidget {
   const CustomButton({
@@ -22,17 +25,34 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      splashRadius: splashRadius,
-      splashColor: splashColor,
-      highlightColor: highlightColor,
-      focusColor: focusColor,
-      onPressed: onpressed,
-      icon: Icon(
-        icon,
-        color: Theme.of(context).backgroundColor,
-        size: iconSize,
-      ),
-    );
+    return ResponsiveAdapter.responsiveadapter()
+        // ignore: deprecated_member_use
+        ? FlatButton(
+            onPressed: onpressed,
+            shape: const CircleBorder(),
+            focusColor: ThemeIdentifier.themeIdentifier(context)
+                ? ColorConstants.androidTVDark
+                : ColorConstants.androidTVLight,
+            child: Center(
+              child: FaIcon(
+                icon,
+                color: Theme.of(context).backgroundColor,
+                size: iconSize,
+              ),
+            ),
+          )
+        : IconButton(
+            hoverColor: Colors.red,
+            splashRadius: splashRadius,
+            splashColor: splashColor,
+            highlightColor: highlightColor,
+            focusColor: focusColor,
+            onPressed: onpressed,
+            icon: Icon(
+              icon,
+              color: Theme.of(context).backgroundColor,
+              size: iconSize,
+            ),
+          );
   }
 }
