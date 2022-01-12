@@ -2,3 +2,4 @@
 
 export 'responsive_adapter.dart';
 export 'theme_identifier.dart';
+export 'islandpulse_theme.dart';
