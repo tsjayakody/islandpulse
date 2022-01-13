@@ -21,7 +21,7 @@ class IslandPulseMusicPlayer extends StatelessWidget {
           ValueListenableBuilder<String>(
               valueListenable: pageManager.currentSongTitleNotifier,
               builder: (_, value, __) {
-                // * album name text widget
+                // * song name text widget
                 return AlbumNameText(value: value);
               }),
           Padding(
@@ -29,7 +29,7 @@ class IslandPulseMusicPlayer extends StatelessWidget {
             child: ValueListenableBuilder<String>(
                 valueListenable: pageManager.currentSongArtistNotifier,
                 builder: (_, value, __) {
-                  // * song name text widget
+                  // * artist name text widget
                   return SongNameText(value: value);
                 }),
           ),

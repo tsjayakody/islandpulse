@@ -29,6 +29,7 @@ class SongBackwardForwardButton extends StatelessWidget {
           ValueListenableBuilder<String>(
               valueListenable: pageManager.currentRadioTitleNotifier,
               builder: (_, value, __) {
+                //* value -- main stream or laid back
                 return Text(
                   value,
                   style: GoogleFonts.montserrat(
