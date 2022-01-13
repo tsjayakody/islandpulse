@@ -14,12 +14,12 @@ class BuildPotrait extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          //! if overflow change height value
           SizedBox(
-            width: double.infinity,
-            height: MediaQuery.of(context).size.height * 0.04,
+            height: MediaQuery.of(context).size.height * 0.01,
           ),
           //*island-pulse logo
           IslandPulseLogo(
@@ -36,8 +36,9 @@ class BuildPotrait extends StatelessWidget {
           //* social media buttons
           IslandPulseSocialMediaButtons(
               isLandscape: true, pageManager: pageManager),
-          const SizedBox(
-            height: 10.0,
+          //! if overflow change height value
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.01,
           ),
         ],
       ),
