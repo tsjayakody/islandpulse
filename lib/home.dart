@@ -6,6 +6,7 @@ import 'package:islandpulse/service/service_locator.dart';
 import 'package:islandpulse/widgets/widgets.dart';
 
 class Home extends StatefulWidget {
+  // ignore: prefer_typing_uninitialized_variables
   final toggleCall;
   const Home({Key? key, this.toggleCall}) : super(key: key);
   @override
